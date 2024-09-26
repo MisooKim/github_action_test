@@ -1,0 +1,27 @@
+name: Auto Comment on Issue
+
+# 이슈가 생성될 때 이벤트 트리거
+on:
+  issues:
+    types: 
+      - opened  # 이슈가 생성될 때만 반응
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+
+    steps:
+      # GitHub 토큰을 사용하여 이슈에 코멘트 달기
+      - name: Comment on new issue
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.MY_PERSONAL_TOKEN }}  # GitHub에서 제공하는 기본 토큰 사용
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.payload.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "감사합니다. 이슈 확인 후 처리해드릴께요.😊"
+            })
+
+
